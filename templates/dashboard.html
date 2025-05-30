@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0077b6; /* Deep Blue */
+            --primary-color-dark: #023e8a; /* Dark Blue */
+            --secondary-color: #48cae4; /* Sky Blue */
+            --accent-color: #00b4d8; /* Aqua */
+            --background-color: #f0f8ff; /* Light Blue Tint */
+            --text-dark: #023e8a; /* Dark Blue */
+            --text-light: #6b7280; /* Light Grey */
+            --white: #ffffff;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* General Reset */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/css/doc.jpg');
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgb(236, 239, 250); /* White background */
+            color: var(--text-dark); /* Blue text */
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+        }
+
+        .nav__logo {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .nav__links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .link a {
+            text-decoration: none;
+            color: var(--primary-color); /* Blue text */
+            font-size: 1.2rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .link a:hover {
+            color: var(--primary-color-dark);
+        }
+
+        .logout-button {
+            width: 90px;
+            padding: 0.5rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-size: 0.9rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 3rem;
+        }
+
+        .logout-button:hover {
+            background-color: var(--primary-color-dark);
+        }
+
+        /* Full-Screen Sections */
+        section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5rem;
+            box-sizing: border-box;
+            position: relative;
+            color: var(--white);
+        }
+
+        section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            z-index: 0;
+        }
+
+        .section-content {
+            max-width: 600px;
+            text-align: right;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-content p {
+            font-size: 1.5rem;
+            color: var(--white);
+            line-height: 1.8;
+        }
+
+        /* Styled Links Instead of Buttons */
+        @keyframes typing {
+    0% {
+        width: 0;
+    }
+    50% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+
+.section-content a {
+    display: inline-block;
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: var(--secondary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid var(--secondary-color);
+    width: 0;
+    animation: typing 4s steps(30, end) infinite;
+}
+
+.section-content a:hover {
+    color: white;
+    border-right: 2px solid white;
+}
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav__logo {
+                font-size: 1.5rem;
+            }
+
+            .nav__links {
+                gap: 1rem;
+            }
+
+            .link a {
+                font-size: 1rem;
+            }
+
+            .logout-button {
+                width: 80px;
+                padding: 0.4rem;
+                font-size: 0.8rem;
+                margin-right: 0.5rem;
+            }
+
+            section {
+                padding-right: 2rem;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .section-content {
+                text-align: center;
+            }
+
+            .section-content p {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav__logo">MedCare</div>
+        <ul class="nav__links">
+            <li class="link"><a href="#health-reports">Review Health Reports</a></li>
+            <li class="link"><a href="#google-fit">Connect With GoogleFit</a></li>
+            <li class="link"><a href="#chatbot">Chat with Health Assistant</a></li>
+        </ul>
+        <a href="{{ url_for('logout') }}">
+            <button class="logout-button">Log Out</button>
+        </a>
+    </nav>
+
+    <!-- Section 1: Review Health Reports -->
+    <section id="health-reports">
+        <div class="section-content">
+            <a href="{{ url_for('add_report') }}">Review Health Reports</a>
+            <p>
+                Upload your electronic health records to gain insights into your medical history, 
+                track progress, and receive personalized recommendations. Stay informed about your 
+                health with detailed analysis and actionable insights.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 2: Connect With GoogleFit -->
+    <section id="google-fit">
+        <div class="section-content">
+            <a href="http://localhost:3000">Connect With GoogleFit</a>
+            <p>
+                Sync your GoogleFit account to monitor your fitness activities, heart rate, 
+                sleep patterns, and more in real-time. Get a comprehensive view of your health 
+                and fitness journey with seamless integration.
+            </p>
+        </div>
+    </section>
+
+    <!-- Section 3: Chat with Health Assistant -->
+    <section id="chatbot">
+        <div class="section-content">
+            <a href="{{ url_for('chatbot') }}">Chat with Health Assistant</a>
+            <p>
+                Our AI-powered health assistant is available 24/7 to answer your questions, 
+                provide medical advice, and guide you through your health journey. Get instant 
+                support and recommendations tailored to your needs.
+            </p>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
